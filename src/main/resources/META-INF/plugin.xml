@@ -1,0 +1,28 @@
+<idea-plugin>
+  <id>com.github.rsredsq.ridea</id>
+  <name>RIdea</name>
+  <vendor email="nikita.e.zhelezkov@gmail.com" url="http://github.com/rsredsq">
+    http://github.com/rsredsq
+  </vendor>
+
+  <description><![CDATA[
+    Enter short description for your plugin here.<br>
+    <em>most HTML tags may be used</em>
+    ]]></description>
+
+  <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
+       on how to target different products -->
+  <!-- uncomment to enable plugin in all products
+  <depends>com.intellij.modules.lang</depends>
+  -->
+
+  <extensions defaultExtensionNs="com.intellij">
+    <!-- Add your extensions here -->
+    <applicationConfigurable id="ridea.settings" displayName="RIdea" groupId="tools"
+      instance="com.github.rsredsq.ridea.settings.RideaSettingsConfigurable"/>
+    <applicationService serviceImplementation="com.github.rsredsq.ridea.settings.RideaConfig"/>
+  </extensions>
+
+  <actions>
+  </actions>
+</idea-plugin>
