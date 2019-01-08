@@ -1,6 +1,7 @@
 package com.github.rsredsq.ridea.settings
 
 import com.intellij.openapi.components.PersistentStateComponent
+import com.intellij.openapi.components.ServiceManager
 import com.intellij.openapi.components.State
 import com.intellij.openapi.components.Storage
 import com.intellij.util.xmlb.XmlSerializerUtil
@@ -20,4 +21,8 @@ data class RideaConfig(
   override fun loadState(state: RideaConfig) =
     XmlSerializerUtil.copyBean(state, this)
 
+  companion object {
+    val instance: RideaConfig
+      get() = ServiceManager.getService(RideaConfig::class.java)
+  }
 }

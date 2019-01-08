@@ -16,11 +16,20 @@
   <depends>com.intellij.modules.lang</depends>
   -->
 
+  <application-components>
+    <component>
+      <implementation-class>com.github.rsredsq.ridea.RideaComponent</implementation-class>
+    </component>
+  </application-components>
+
   <extensions defaultExtensionNs="com.intellij">
+    <fileDocumentSynchronizationVetoer implementation="com.github.rsredsq.ridea.MyVetoer"/>
+    <scratch.rootType implementation="com.github.rsredsq.ridea.RemoteFilesRootType"/>
     <!-- Add your extensions here -->
     <applicationConfigurable id="ridea.settings" displayName="RIdea" groupId="tools"
       instance="com.github.rsredsq.ridea.settings.RideaSettingsConfigurable"/>
     <applicationService serviceImplementation="com.github.rsredsq.ridea.settings.RideaConfig"/>
+    <applicationService serviceImplementation="com.github.rsredsq.ridea.server.SessionManager"/>
   </extensions>
 
   <actions>
