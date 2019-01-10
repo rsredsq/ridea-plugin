@@ -19,7 +19,7 @@ fun acceptConnection(key: SelectionKey, selector: Selector) {
   val serverInfo = "RIdea\n"
   client.write(ByteBuffer.wrap(serverInfo.toByteArray()))
 
-  sessionManager.newSession(client)
+  sessionManager.onNewConnection(client)
 
   println("Accepted connection from ${client.remoteAddress}")
 }
