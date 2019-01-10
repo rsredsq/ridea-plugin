@@ -28,43 +28,61 @@ private fun handleSelectionKey(key: SelectionKey) = when {
 
 private val Selector.serverWorkerJob
   get() = {
-    while (isOpen) {
-      select()
-      val keys = selectedKeys()
-      val iter = keys.iterator()
-      while (iter.hasNext()) {
-        val key = iter.next()
-        val res = runCatching { handleSelectionKey(key) }
-        res.onFailure {
-          it.printStackTrace()
-          log.error("Error during handling socket", it)
+    try {
+      while (isOpen) {
+        select()
+        val keys = selectedKeys()
+        val iter = keys.iterator()
+        while (iter.hasNext()) {
+          val key = iter.next()
+          val res = runCatching { handleSelectionKey(key) }
+          res.onFailure {
+            it.printStackTrace()
+            log.error("Error during handling socket", it)
+          }
+          iter.remove()
         }
-        iter.remove()
       }
+    } catch (e: Exception) {
+      log.warn("Exception in server thread", e)
     }
   }
 
-class Server(private val host: String, private val port: Int) : Disposable {
-  private val selector = Selector.open()
-  private val socket = ServerSocketChannel.open().apply {
-    configureBlocking(false)
-    register(selector, SelectionKey.OP_ACCEPT)
-  }
+class Server(host: String, port: Int) : Disposable {
+  private lateinit var selector: Selector
+  private lateinit var socket: ServerSocketChannel
+  private lateinit var serverThread: Thread
 
-  private val serverThread: Thread =
-    thread(name = "RIdea-server-socket-thread", start = false, block = selector.serverWorkerJob)
+  private val address = InetSocketAddress(host, port)
 
   fun start() {
-    val address = InetSocketAddress(host, port)
-    log.info("Binding server to $address")
-    socket.bind(address)
-    serverThread.start()
+    log.info("Starting server on $address")
+
+    selector = Selector.open()
+    socket = bindSocket()
+    serverThread = runServerThread()
   }
 
-  override fun dispose() {
+  private fun bindSocket() = ServerSocketChannel.open()
+    .apply {
+      configureBlocking(false)
+      register(selector, SelectionKey.OP_ACCEPT)
+      bind(address)
+    }
+
+  private fun runServerThread() =
+    thread(
+      name = "RIdea-server-socket-thread",
+      block = selector.serverWorkerJob
+    )
+
+  fun stop() {
     socket.close()
     selector.close()
     serverThread.join(1000)
   }
+
+  override fun dispose() =
+    stop()
 
 }

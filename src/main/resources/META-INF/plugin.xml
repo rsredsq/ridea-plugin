@@ -23,7 +23,8 @@
   </application-components>
 
   <extensions defaultExtensionNs="com.intellij">
-    <fileDocumentSynchronizationVetoer implementation="com.github.rsredsq.ridea.RemoteFileDocumentBeforeSaveVetoer"/>
+    <fileDocumentSynchronizationVetoer
+      implementation="com.github.rsredsq.ridea.RemoteFileDocumentBeforeSaveVetoer"/>
     <scratch.rootType implementation="com.github.rsredsq.ridea.RemoteFilesRootType"/>
     <applicationConfigurable id="ridea.settings" displayName="RIdea" groupId="tools"
       instance="com.github.rsredsq.ridea.settings.RideaSettingsConfigurable"/>
@@ -33,5 +34,12 @@
   </extensions>
 
   <actions>
+    <group id="ridea-actions" text="RIdea" popup="true">
+      <add-to-group group-id="ToolsMenu"/>
+      <action id="ridea-server-start" class="com.github.rsredsq.ridea.ServerStartAction"
+        text="Server start"/>
+      <action id="ridea-server-stop" class="com.github.rsredsq.ridea.ServerStopAction"
+        text="Server stop"/>
+    </group>
   </actions>
 </idea-plugin>
