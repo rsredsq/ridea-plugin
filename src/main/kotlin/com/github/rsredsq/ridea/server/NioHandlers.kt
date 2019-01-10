@@ -1,5 +1,8 @@
 package com.github.rsredsq.ridea.server
 
+import com.github.rsredsq.ridea.utils.toByteBuffer
+import com.github.rsredsq.ridea.utils.withNewLine
+import com.intellij.openapi.diagnostic.logger
 import com.intellij.util.io.toByteArray
 import java.nio.ByteBuffer
 import java.nio.channels.SelectionKey
@@ -8,26 +11,32 @@ import java.nio.channels.ServerSocketChannel
 import java.nio.channels.SocketChannel
 import java.nio.charset.Charset
 
+private val log = logger<Server>()
 private val sessionManager = SessionManager.instance
 
-fun acceptConnection(key: SelectionKey, selector: Selector) {
+const val SERVER_TYPE = "RIdea"
+
+internal fun acceptConnection(key: SelectionKey, selector: Selector) {
+  fun sendServerInfo(client: SocketChannel) =
+    client.write(SERVER_TYPE.withNewLine().toByteBuffer())
+
   val client = (key.channel() as ServerSocketChannel).accept()
   client.configureBlocking(false)
 
   client.register(selector, SelectionKey.OP_READ)
 
-  val serverInfo = "RIdea\n"
-  client.write(ByteBuffer.wrap(serverInfo.toByteArray()))
+  sendServerInfo(client)
 
   sessionManager.onNewConnection(client)
 
-  println("Accepted connection from ${client.remoteAddress}")
+  log.info("Accepted new connection from ${client.remoteAddress}")
 }
 
-fun readSelectionKey(key: SelectionKey) {
+internal fun readSelectionKey(key: SelectionKey) {
   val client = key.channel() as SocketChannel
   val buffer = ByteBuffer.allocate(1024)
 
+  //since the text protocol is used, then convert everything into string
   val message = buildString {
     while (client.read(buffer) > 0) {
       buffer.flip()

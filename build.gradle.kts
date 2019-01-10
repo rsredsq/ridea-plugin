@@ -13,9 +13,19 @@ repositories {
 dependencies {
   implementation(kotlin("stdlib-jdk8"))
   implementation(kotlin("reflect"))
+
+  testCompile("org.junit.jupiter:junit-jupiter-api:5.3.+")
+  testCompile("com.nhaarman.mockitokotlin2:mockito-kotlin:2.1.0")
+
+  testRuntime("org.junit.jupiter:junit-jupiter-engine:5.3.+")
 }
 
 tasks {
+
+  test {
+    useJUnitPlatform()
+  }
+
   compileKotlin {
     kotlinOptions.jvmTarget = "1.8"
   }
