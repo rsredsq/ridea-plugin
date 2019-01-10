@@ -77,6 +77,7 @@ class Server(host: String, port: Int) : Disposable {
     )
 
   fun stop() {
+    SessionManager.instance.closeAll()
     socket.close()
     selector.close()
     serverThread.join(1000)

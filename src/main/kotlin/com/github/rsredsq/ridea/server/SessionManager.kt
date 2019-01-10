@@ -53,6 +53,9 @@ class SessionManager {
 
   }
 
+  fun closeAll() =
+    sessions.keys.forEach { it.close() }
+
   companion object {
     val instance: SessionManager
       get() = ServiceManager.getService(SessionManager::class.java)

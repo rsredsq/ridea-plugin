@@ -38,5 +38,5 @@ tasks {
 intellij {
   updateSinceUntilBuild = false
   sandboxDirectory = "${project.buildDir}/idea-sandbox"
-  version = "2018.3.2"
+  version = "2018.3.3"
 }
