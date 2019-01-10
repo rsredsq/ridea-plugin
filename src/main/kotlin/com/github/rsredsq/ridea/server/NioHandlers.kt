@@ -14,8 +14,6 @@ import java.nio.charset.Charset
 private val log = logger<Server>()
 private val sessionManager = SessionManager.instance
 
-const val SERVER_TYPE = "RIdea"
-
 internal fun acceptConnection(key: SelectionKey, selector: Selector) {
   fun sendServerInfo(client: SocketChannel) =
     client.write(SERVER_TYPE.withNewLine().toByteBuffer())

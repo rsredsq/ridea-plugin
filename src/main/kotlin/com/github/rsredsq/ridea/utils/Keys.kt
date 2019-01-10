@@ -1,6 +1,6 @@
 package com.github.rsredsq.ridea.utils
 
-import com.github.rsredsq.ridea.server.RemoteFile
+import com.github.rsredsq.ridea.server.RemoteSession
 import com.intellij.openapi.util.Key
 
-val REMOTE_FILE_KEY = Key.create<RemoteFile>("RemoteFile")
+val REMOTE_SESSION_KEY = Key.create<RemoteSession>("RemoteFile")

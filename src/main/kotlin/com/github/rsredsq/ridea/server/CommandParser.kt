@@ -28,7 +28,7 @@ class OpenCommandParser : LineByLineParser {
     } else {
       val contentLine = line.substring(0, Math.min(line.length, bytesToRead!!))
       bytesToRead = bytesToRead?.minus(contentLine.length)
-      command.attr.compute("data-content") { _, v ->
+      command.attr.compute(OPEN_DATA_CONTENT) { _, v ->
         if (v != null) return@compute v + line
         return@compute line
       }
@@ -43,6 +43,15 @@ class CommandParser {
   private var parser: LineByLineParser? = null
 
   var command: InputCommand? = null
+    private set
+    get() {
+      if (field != null) {
+        val tmp = field
+        field = null
+        return tmp
+      }
+      return field
+    }
 
   fun parseLine(line: String) {
     parser?.apply {

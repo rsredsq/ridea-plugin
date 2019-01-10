@@ -1,14 +1,14 @@
 package com.github.rsredsq.ridea
 
-import com.github.rsredsq.ridea.utils.REMOTE_FILE_KEY
+import com.github.rsredsq.ridea.utils.REMOTE_SESSION_KEY
 import com.intellij.openapi.editor.Document
 import com.intellij.openapi.fileEditor.FileDocumentManager
 import com.intellij.openapi.fileEditor.FileDocumentSynchronizationVetoer
 
 class RemoteFileDocumentBeforeSaveVetoer(
-  val remoteFilesService: RemoteFilesService,
-  val remoteFilesRootType: RemoteFilesRootType,
-  val fileDocuementManager: FileDocumentManager
+  private val remoteFilesService: RemoteFilesService,
+  private val remoteFilesRootType: RemoteFilesRootType,
+  private val fileDocuementManager: FileDocumentManager
 ) : FileDocumentSynchronizationVetoer() {
   override fun maySaveDocument(document: Document, isSaveExplicit: Boolean): Boolean {
     val file = fileDocuementManager.getFile(document)
@@ -17,8 +17,8 @@ class RemoteFileDocumentBeforeSaveVetoer(
     file!!
 
     if (isSaveExplicit) {
-      val remoteFile = file.getUserData(REMOTE_FILE_KEY)
-      remoteFile?.saveRemotely()
+      val remoteSession = file.getUserData(REMOTE_SESSION_KEY)!!
+      remoteFilesService.saveFileRemotely(remoteSession, file.name, document.text)
     }
     return true
   }

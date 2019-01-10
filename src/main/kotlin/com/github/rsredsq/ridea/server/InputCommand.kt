@@ -1,5 +1,9 @@
 package com.github.rsredsq.ridea.server
 
+const val OPEN_TOKEN = "token"
+const val OPEN_DATA_LENGTH = "data"
+const val OPEN_DATA_CONTENT = "data-content"
+
 enum class InputRemoteCommandType {
   OPEN
 }

@@ -9,6 +9,8 @@ import java.nio.channels.Selector
 import java.nio.channels.ServerSocketChannel
 import kotlin.concurrent.thread
 
+const val SERVER_TYPE = "RIdea"
+
 private val log = logger<Server>()
 
 private fun handleSelectionKey(key: SelectionKey) = when {
