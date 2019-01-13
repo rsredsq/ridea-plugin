@@ -1,10 +1,10 @@
-##EARLY WIP: RIdea - Remote Idea
+## EARLY WIP: RIdea - Remote Idea
 
 **Caution: This is early wip prototype, bugs and missing features are expected**
 
 A package that implements the Textmate's 'rmate' feature for Isntellij IDEA.
 
-###Installation
+### Installation
 
 - Install the plugin
 - Install a rmate version
@@ -18,7 +18,7 @@ A package that implements the Textmate's 'rmate' feature for Isntellij IDEA.
 - Node.js version: https://github.com/jrnewell/jmate
 - Golang version: https://github.com/mattn/gomate
 
-###Usage
+### Usage
 
 Server will be started automatically by default
 
