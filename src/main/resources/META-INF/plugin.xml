@@ -37,9 +37,9 @@
     <group id="ridea-actions" text="RIdea" popup="true">
       <add-to-group group-id="ToolsMenu"/>
       <action id="ridea-server-start" class="com.github.rsredsq.ridea.ServerStartAction"
-        text="Server start"/>
+        text="Start server"/>
       <action id="ridea-server-stop" class="com.github.rsredsq.ridea.ServerStopAction"
-        text="Server stop"/>
+        text="Stop server"/>
     </group>
   </actions>
 </idea-plugin>

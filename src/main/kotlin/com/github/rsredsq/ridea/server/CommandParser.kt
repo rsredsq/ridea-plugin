@@ -19,22 +19,30 @@ class OpenCommandParser : LineByLineParser {
   override fun parseLine(line: String) {
     if (line.isEmpty()) return
     if (!dataBlockStarted) {
-      val (key, value) = line.split(": ").map { it.trim() }
-      command.attr[key] = value
-      if (key == "data") {
-        dataBlockStarted = true
-        bytesToRead = value.toInt()
-      }
+      parseAttribute(line)
     } else {
-      val contentLine = line.substring(0, Math.min(line.length, bytesToRead!!))
-      bytesToRead = bytesToRead?.minus(contentLine.length)
-      command.attr.compute(OPEN_DATA_CONTENT) { _, v ->
-        if (v != null) return@compute v + line
-        return@compute line
-      }
-      if (bytesToRead == 0) {
-        isFinished = true
-      }
+      parseData(line)
+    }
+  }
+
+  private fun parseData(line: String) {
+    val contentLine = line.substring(0, Math.min(line.length, bytesToRead!!))
+    bytesToRead = bytesToRead?.minus(contentLine.length)
+    command.attr.compute(OPEN_DATA_CONTENT) { _, v ->
+      if (v != null) return@compute v + line
+      return@compute line
+    }
+    if (bytesToRead == 0) {
+      isFinished = true
+    }
+  }
+
+  private fun parseAttribute(line: String) {
+    val (key, value) = line.split(": ").map { it.trim() }
+    command.attr[key] = value
+    if (key == "data") {
+      dataBlockStarted = true
+      bytesToRead = value.toInt()
     }
   }
 }

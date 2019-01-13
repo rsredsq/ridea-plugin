@@ -17,19 +17,18 @@ class RemoteFileDocumentBeforeSaveVetoer(
 
     file!!
 
-    if (isSaveExplicit) {
-      val remoteSession = file.getUserData(REMOTE_SESSION_KEY)!!
-      val saveRes = runCatching {
-        remoteFilesService.saveFileRemotely(remoteSession, file.name, document.text)
-      }
-      saveRes.onFailure {
-        ApplicationManager.getApplication().runWriteAction {
-          file.delete(this)
-          FileDocumentManager.getInstance().reloadFiles(file)
-        }
-      }
-      saveRes.onSuccess { return true }
+    if (!isSaveExplicit) return true
+    val remoteSession = file.getUserData(REMOTE_SESSION_KEY)!!
+    val saveRes = runCatching {
+      remoteFilesService.saveFileRemotely(remoteSession, file.name, document.text)
     }
+    saveRes.onFailure {
+      ApplicationManager.getApplication().runWriteAction {
+        file.delete(this)
+        FileDocumentManager.getInstance().reloadFiles(file)
+      }
+    }
+    saveRes.onSuccess { return true }
     return false
   }
 }
