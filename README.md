@@ -2,7 +2,7 @@
 
 **Caution: This is early wip prototype, bugs and missing features are expected**
 
-A package that implements the Textmate's 'rmate' feature for Isntellij IDEA.
+A package that implements the Textmate's 'rmate' feature for Intellij IDEA.
 
 ### Installation
 
