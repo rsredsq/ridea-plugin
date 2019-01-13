@@ -23,8 +23,8 @@ A package that implements the Textmate's 'rmate' feature for Intellij IDEA.
 
 * Create an ssh tunnel
 
-`ssh -R 52698:127.0.0.1:52698 user@example.org`
+  `ssh -R 52698:127.0.0.1:52698 user@example.org`
 
 * Go to the remote system and run
 
-`rmate -p 52698 file`
+  `rmate -p 52698 file`
